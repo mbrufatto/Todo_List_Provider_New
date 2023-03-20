@@ -29,7 +29,8 @@ class _RegisterPageState extends State<RegisterPage> {
       var success = controller.success;
       var error = controller.error;
       if (success) {
-        Navigator.of(context).pop;
+        Navigator.of(context).pop();
+        // Navigator.of(context).pushNamed('/login');
       } else if (error != null && error.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -43,9 +44,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
-    // _emailEC.dispose();
-    // _passworEC.dispose();
-    // _confirmPasswordEC.dispose();
+    _emailEC.dispose();
+    _passworEC.dispose();
+    _confirmPasswordEC.dispose();
     // context.read<RegisterController>().removeListener(() {});
     super.dispose();
   }

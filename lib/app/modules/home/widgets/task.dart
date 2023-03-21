@@ -20,13 +20,13 @@ class Task extends StatelessWidget {
           value: true,
           onChanged: (value) {},
         ),
-        title: Text(
+        title: const Text(
           'Descrição da Task',
           style: TextStyle(
             decoration: true ? TextDecoration.lineThrough : null,
           ),
         ),
-        subtitle: Text(
+        subtitle: const Text(
           '20/07/2021',
           style: TextStyle(
             decoration: true ? TextDecoration.lineThrough : null,
@@ -34,7 +34,7 @@ class Task extends StatelessWidget {
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(width: 1),
+          side: const BorderSide(width: 1),
         ),
       ),
     );

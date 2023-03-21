@@ -8,15 +8,17 @@ class TodoListField extends StatelessWidget {
   final ValueNotifier<bool> obscureTextVN;
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
+  final FocusNode? focusNode;
 
-  TodoListField(
-      {Key? key,
-      required this.lable,
-      this.suffixIconButton,
-      this.obscureText = false,
-      this.controller,
-      this.validator})
-      : assert(obscureText == true ? suffixIconButton == null : true,
+  TodoListField({
+    Key? key,
+    required this.lable,
+    this.suffixIconButton,
+    this.obscureText = false,
+    this.controller,
+    this.validator,
+    this.focusNode,
+  })  : assert(obscureText == true ? suffixIconButton == null : true,
             'ObscureText não pode ser enviado com suffixIconButton'),
         obscureTextVN = ValueNotifier(obscureText),
         super(key: key);
@@ -29,6 +31,7 @@ class TodoListField extends StatelessWidget {
         return TextFormField(
           controller: controller,
           validator: validator,
+          focusNode: focusNode,
           decoration: InputDecoration(
             labelText: lable,
             labelStyle: TextStyle(

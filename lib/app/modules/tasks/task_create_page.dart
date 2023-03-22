@@ -28,10 +28,11 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
     DefaultListenerNotifier(
       changeNotifier: widget._controller,
     ).listener(
-      context: context,
+      context: this.context,
       successCallBack: ((notifier, listenerInstance) {
         listenerInstance.dispose();
-        Navigator.pop(context);
+        Navigator.pop(this.context);
+        print('Sucesso');
       }),
     );
   }
@@ -66,7 +67,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
             widget._controller.save(_descriptionEC.text);
           }
         },
-        label: Text(
+        label: const Text(
           'Salvar Task',
           style: TextStyle(
             fontWeight: FontWeight.bold,

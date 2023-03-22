@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget._homeController.loadTotalTasks();
       widget._homeController.findTasks(filter: TaskFilterEnum.today);
     });

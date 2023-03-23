@@ -30,10 +30,10 @@ class Task extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    // Loader.show(context);
-                    // await context.read<TasksService>().delete(model);
-                    // Loader.hide();
-                    Navigator.of(context).pop(true);
+                    Loader.show(context);
+                    await context.read<TasksService>().delete(model);
+                    Loader.hide();
+                    Navigator.of(context).pop();
                   },
                   child: const Text('Confirmar'),
                 ),

@@ -16,12 +16,12 @@ class TaskCreateController extends DefaultChangeNotifier {
 
   DateTime? get selectedDate => _selectedDate;
 
-  Future<void> save(String description) async {
+  Future<void> save(String description, userId) async {
     try {
       showLoadingAndResetState();
       notifyListeners();
       if (_selectedDate != null) {
-        await _tasksService.save(_selectedDate!, description);
+        await _tasksService.save(_selectedDate!, description, userId);
         success();
       } else {
         setError('Data da task não selecionada');

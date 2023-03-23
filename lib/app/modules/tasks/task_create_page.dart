@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list_provider/app/core/auth/auth_provider.dart';
 import 'package:todo_list_provider/app/core/notifier/default_listener_notifier.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extension.dart';
 import 'package:todo_list_provider/app/core/widget/todo_list_field.dart';
@@ -64,7 +65,8 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            widget._controller.save(_descriptionEC.text);
+            final userId = context.read<AuthProvider>().user?.uid;
+            widget._controller.save(_descriptionEC.text, userId);
           }
         },
         label: const Text(

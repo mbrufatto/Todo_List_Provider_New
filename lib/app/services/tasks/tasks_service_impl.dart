@@ -11,22 +11,23 @@ class TasksServiceImpl implements TasksService {
       : _tasksRepository = tasksRepository;
 
   @override
-  Future<void> save(DateTime date, String description) =>
-      _tasksRepository.save(date, description);
+  Future<void> save(DateTime date, String description, String userId) =>
+      _tasksRepository.save(date, description, userId);
 
   @override
-  Future<List<TaskModel>> getToday() {
-    return _tasksRepository.findByPeriod(DateTime.now(), DateTime.now());
+  Future<List<TaskModel>> getToday(String userId) {
+    return _tasksRepository.findByPeriod(
+        DateTime.now(), DateTime.now(), userId);
   }
 
   @override
-  Future<List<TaskModel>> getTomorrow() {
+  Future<List<TaskModel>> getTomorrow(String userId) {
     var tomorrowDate = DateTime.now().add(const Duration(days: 1));
-    return _tasksRepository.findByPeriod(tomorrowDate, tomorrowDate);
+    return _tasksRepository.findByPeriod(tomorrowDate, tomorrowDate, userId);
   }
 
   @override
-  Future<WeekTaskModel> getWeek() async {
+  Future<WeekTaskModel> getWeek(String userId) async {
     final today = DateTime.now();
     var startFilter = DateTime(today.year, today.month, today.day, 0, 0, 0);
     DateTime endFilter;
@@ -38,7 +39,8 @@ class TasksServiceImpl implements TasksService {
 
     endFilter = startFilter.add(Duration(days: 7));
 
-    final tasks = await _tasksRepository.findByPeriod(startFilter, endFilter);
+    final tasks =
+        await _tasksRepository.findByPeriod(startFilter, endFilter, userId);
     return WeekTaskModel(
         startDate: startFilter, endDate: endFilter, tasks: tasks);
   }

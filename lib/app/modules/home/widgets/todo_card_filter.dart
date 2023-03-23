@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_list_provider/app/core/auth/auth_provider.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extension.dart';
 import 'package:todo_list_provider/app/models/task_filter_enum.dart';
 import 'package:todo_list_provider/app/models/total_tasks_model.dart';
@@ -34,7 +35,9 @@ class TodoCardFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.read<HomeController>().findTasks(filter: taskFilter),
+      onTap: () => context.read<HomeController>().findTasks(
+          filter: taskFilter,
+          userId: context.read<AuthProvider>().user?.uid ?? ''),
       borderRadius: BorderRadius.circular(30),
       child: Container(
         constraints: const BoxConstraints(

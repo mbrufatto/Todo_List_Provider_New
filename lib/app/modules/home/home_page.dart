@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_list_provider/app/core/auth/auth_provider.dart';
 import 'package:todo_list_provider/app/core/notifier/default_listener_notifier.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extension.dart';
 import 'package:todo_list_provider/app/core/ui/todo_list_icons.dart';
@@ -25,9 +26,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _userId;
+
   @override
   void initState() {
     super.initState();
+    _userId = context.read<AuthProvider>().user?.uid ?? '';
     DefaultListenerNotifier(changeNotifier: widget._homeController).listener(
       context: context,
       successCallBack: (notifier, listenerInstance) {
@@ -36,8 +40,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget._homeController.loadTotalTasks();
-      widget._homeController.findTasks(filter: TaskFilterEnum.today);
+      widget._homeController.loadTotalTasks(_userId);
+      widget._homeController
+          .findTasks(filter: TaskFilterEnum.today, userId: _userId);
     });
   }
 
@@ -60,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-    widget._homeController.refreshPage();
+    widget._homeController.refreshPage(_userId);
   }
 
   @override
@@ -74,7 +79,7 @@ class _HomePageState extends State<HomePage> {
           PopupMenuButton(
             icon: const Icon(TodoListIcons.filter),
             onSelected: (value) =>
-                widget._homeController.showOrHideFinishingTasks(),
+                widget._homeController.showOrHideFinishingTasks(_userId),
             itemBuilder: (_) => [
               PopupMenuItem<bool>(
                 value: true,

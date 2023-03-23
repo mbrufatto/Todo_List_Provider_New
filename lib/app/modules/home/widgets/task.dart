@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_list_provider/app/core/auth/auth_provider.dart';
 import 'package:todo_list_provider/app/modules/home/home_controller.dart';
 
 import '../../../models/task_model.dart';
@@ -13,6 +14,7 @@ class Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _userId = context.read<AuthProvider>().user?.uid ?? '';
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -27,7 +29,7 @@ class Task extends StatelessWidget {
         leading: Checkbox(
           value: model.finished,
           onChanged: (value) =>
-              context.read<HomeController>().checkOrUncheckTask(model),
+              context.read<HomeController>().checkOrUncheckTask(model, _userId),
         ),
         title: Text(
           model.description,

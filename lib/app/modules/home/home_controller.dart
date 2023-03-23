@@ -57,9 +57,11 @@ class HomeController extends DefaultChangeNotifier {
 
     switch (filter) {
       case TaskFilterEnum.today:
+        selectedDay = null;
         tasks = await _taskService.getToday(userId);
         break;
       case TaskFilterEnum.tomorrow:
+        selectedDay = null;
         tasks = await _taskService.getTomorrow(userId);
         break;
       case TaskFilterEnum.week:

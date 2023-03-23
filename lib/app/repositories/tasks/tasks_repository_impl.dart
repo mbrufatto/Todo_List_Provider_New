@@ -32,7 +32,7 @@ class TasksRepositoryImpl implements TasksRepository {
     final result = await conn.rawQuery(''' 
       select * 
         from todo 
-        where id_usuario = ? and data_hora between ? and ? 
+        where id_usuario = ? and (data_hora between ? and ?)
         order by data_hora
     ''', [userId, startFilter.toIso8601String(), endFilter.toIso8601String()]);
     return result.map((e) => TaskModel.loadFromDB(e)).toList();

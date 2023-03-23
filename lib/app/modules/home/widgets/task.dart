@@ -15,7 +15,8 @@ class Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _userId = context.read<AuthProvider>().user?.uid ?? '';
+    final userId = context.read<AuthProvider>().user?.uid ?? '';
+    final homeController = context.read<HomeController>();
     return Dismissible(
       direction: DismissDirection.endToStart,
       key: Key(model.id.toString()),
@@ -31,7 +32,7 @@ class Task extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     Loader.show(context);
-                    await context.read<TasksService>().delete(model);
+                    await homeController.delete(model, userId);
                     Loader.hide();
                     Navigator.of(context).pop();
                   },
@@ -73,7 +74,7 @@ class Task extends StatelessWidget {
             value: model.finished,
             onChanged: (value) => context
                 .read<HomeController>()
-                .checkOrUncheckTask(model, _userId),
+                .checkOrUncheckTask(model, userId),
           ),
           title: Text(
             model.description,

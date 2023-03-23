@@ -32,7 +32,7 @@ class TasksRepositoryImpl implements TasksRepository {
     final result = await conn.rawQuery(''' 
       select * 
         from todo 
-        where id_usuario = ? and (data_hora between ? and ?)
+        where id_usuario = ? and (data_hora between ? and ?) and finalizado = 0
         order by data_hora
     ''', [userId, startFilter.toIso8601String(), endFilter.toIso8601String()]);
     return result.map((e) => TaskModel.loadFromDB(e)).toList();
@@ -51,10 +51,6 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<void> delete(TaskModel task) async {
     final conn = await _sqliteConnectionFactory.openConnection();
-    await conn.rawDelete(''' 
-      Delete 
-      From todo
-      Where id = ?
-    '''[task.id]);
+    await conn.rawDelete('Delete from todo where id = ?', [task.id]);
   }
 }

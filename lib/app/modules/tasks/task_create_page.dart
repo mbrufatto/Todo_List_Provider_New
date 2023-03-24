@@ -65,8 +65,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            final userId = context.read<AuthProvider>().user?.uid;
-            widget._controller.save(_descriptionEC.text, userId);
+            widget._controller.save(_descriptionEC.text);
           }
         },
         label: const Text(

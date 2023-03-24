@@ -15,6 +15,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> logout() => _userService.logout();
   User? get user => _firebaseAuth.currentUser;
+  String get userId => _firebaseAuth.currentUser?.uid ?? '';
 
   void loadListener() {
     _firebaseAuth.userChanges().listen((_) => notifyListeners());

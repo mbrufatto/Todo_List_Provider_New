@@ -25,12 +25,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _userId;
-
   @override
   void initState() {
     super.initState();
-    _userId = context.read<AuthProvider>().user?.uid ?? '';
     DefaultListenerNotifier(changeNotifier: widget._homeController).listener(
       context: context,
       successCallBack: (notifier, listenerInstance) {
@@ -39,9 +36,8 @@ class _HomePageState extends State<HomePage> {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget._homeController.loadTotalTasks(_userId);
-      widget._homeController
-          .findTasks(filter: TaskFilterEnum.today, userId: _userId);
+      widget._homeController.loadTotalTasks();
+      widget._homeController.findTasks(filter: TaskFilterEnum.today);
     });
   }
 
@@ -64,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-    widget._homeController.refreshPage(_userId);
+    widget._homeController.refreshPage();
   }
 
   @override
@@ -78,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           PopupMenuButton(
             icon: const Icon(TodoListIcons.filter),
             onSelected: (value) =>
-                widget._homeController.showOrHideFinishingTasks(_userId),
+                widget._homeController.showOrHideFinishingTasks(),
             itemBuilder: (_) => [
               PopupMenuItem<bool>(
                 value: true,

@@ -32,12 +32,18 @@ class TodoCardFilter extends StatelessWidget {
     return percent / 100;
   }
 
+  int _getTotalTaskOpen() {
+    final total = totalTasksModel?.totalTasks ?? 0;
+    final totalFinish = totalTasksModel?.totalTasksFinish ?? 0;
+
+    return total - totalFinish;
+  }
+
   @override
   Widget build(BuildContext context) {
+    int qtdTasksOpen = _getTotalTaskOpen();
     return InkWell(
-      onTap: () => context.read<HomeController>().findTasks(
-          filter: taskFilter,
-          userId: context.read<AuthProvider>().user?.uid ?? ''),
+      onTap: () => context.read<HomeController>().findTasks(filter: taskFilter),
       borderRadius: BorderRadius.circular(30),
       child: Container(
         constraints: const BoxConstraints(
@@ -58,7 +64,7 @@ class TodoCardFilter extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${totalTasksModel?.totalTasks ?? 0} Tasks',
+              '$qtdTasksOpen Tasks',
               style: context.titleStyle.copyWith(
                 fontSize: 10,
                 color: selected ? Colors.white : Colors.grey,

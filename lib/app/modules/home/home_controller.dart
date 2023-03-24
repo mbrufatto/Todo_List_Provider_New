@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:todo_list_provider/app/core/auth/auth_provider.dart';
 import 'package:todo_list_provider/app/core/notifier/default_change_notifier.dart';
 import 'package:todo_list_provider/app/models/task_filter_enum.dart';
 import 'package:todo_list_provider/app/models/task_model.dart';
@@ -7,6 +9,7 @@ import 'package:todo_list_provider/app/services/tasks/tasks_service.dart';
 
 class HomeController extends DefaultChangeNotifier {
   final TasksService _taskService;
+  final AuthProvider _authProvider;
   var filterSelected = TaskFilterEnum.today;
   TotalTasksModel? todayTotalTasks;
   TotalTasksModel? tomorrowTotalTasks;
@@ -17,10 +20,13 @@ class HomeController extends DefaultChangeNotifier {
   DateTime? selectedDay;
   bool showFinishingTasks = false;
 
-  HomeController({required TasksService tasksService})
-      : _taskService = tasksService;
+  HomeController(
+      {required TasksService tasksService, required AuthProvider authProvider})
+      : _taskService = tasksService,
+        _authProvider = authProvider;
 
-  Future<void> loadTotalTasks(String userId) async {
+  Future<void> loadTotalTasks() async {
+    final userId = _authProvider.userId;
     final allTasks = await Future.wait([
       _taskService.getToday(userId),
       _taskService.getTomorrow(userId),
@@ -48,8 +54,8 @@ class HomeController extends DefaultChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> findTasks(
-      {required TaskFilterEnum filter, required String userId}) async {
+  Future<void> findTasks({required TaskFilterEnum filter}) async {
+    final userId = _authProvider.userId;
     filterSelected = filter;
     showLoading();
     notifyListeners();
@@ -100,22 +106,24 @@ class HomeController extends DefaultChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> refreshPage(String userId) async {
-    await findTasks(filter: filterSelected, userId: userId);
-    await loadTotalTasks(userId);
+  Future<void> refreshPage() async {
+    await findTasks(
+      filter: filterSelected,
+    );
+    await loadTotalTasks();
     notifyListeners();
   }
 
-  Future<void> checkOrUncheckTask(TaskModel task, String userId) async {
+  Future<void> checkOrUncheckTask(TaskModel task) async {
     showLoadingAndResetState();
     notifyListeners();
     final taskUpdate = task.copyWith(finished: !task.finished);
     await _taskService.checkOrUncheckTask(taskUpdate);
     hideLoading();
-    refreshPage(userId);
+    refreshPage();
   }
 
-  Future<void> delete(TaskModel task, userId) async {
+  Future<void> delete(TaskModel task) async {
     try {
       showLoadingAndResetState();
       notifyListeners();
@@ -128,12 +136,12 @@ class HomeController extends DefaultChangeNotifier {
       setError('Erro ao cadastrar task');
     } finally {
       hideLoading();
-      refreshPage(userId);
+      refreshPage();
     }
   }
 
-  void showOrHideFinishingTasks(String userId) {
+  void showOrHideFinishingTasks() {
     showFinishingTasks = !showFinishingTasks;
-    refreshPage(userId);
+    refreshPage();
   }
 }

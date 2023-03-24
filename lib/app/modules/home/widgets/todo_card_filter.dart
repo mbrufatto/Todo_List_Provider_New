@@ -41,7 +41,6 @@ class TodoCardFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int qtdTasksOpen = _getTotalTaskOpen();
     return InkWell(
       onTap: () => context.read<HomeController>().findTasks(filter: taskFilter),
       borderRadius: BorderRadius.circular(30),
@@ -64,7 +63,7 @@ class TodoCardFilter extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '$qtdTasksOpen Tasks',
+              '${_getTotalTaskOpen()} Tasks',
               style: context.titleStyle.copyWith(
                 fontSize: 10,
                 color: selected ? Colors.white : Colors.grey,
